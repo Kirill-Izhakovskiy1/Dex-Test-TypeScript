@@ -1,0 +1,149 @@
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Input_file {
+  position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 100%;
+}
+
+.photo-location {
+  
+}
+
+.show-cards {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1300px;
+  /* justify-content: space-between; */
+  margin-left:80px;
+  /* align-items: ; */
+ 
+}
+
+.card {
+  background: linear-gradient(121.57deg, #707070 1.62%, #393939 81.02%);
+  border-radius: 4px;
+  width:364px;
+  height:380px;
+  margin-right:24px;
+  margin-bottom:24px;
+}
+
+.card__inf {
+  background: #303030;
+  border-radius: 0px 0px 4px 4px;
+  width:364px;
+  height:100px;
+}
+
+.card__name {
+  font-family: 'Avenir';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 25px;
+
+/* UI / White */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 0;
+flex-grow: 1;
+margin: 12px 0px;
+}
+
+.card__year {
+  font-family: 'Avenir';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 24px;
+/* or 171% */
+
+text-align: center;
+
+/* UI / Light Grey */
+
+color: #9C9C9C;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 1;
+flex-grow: 1;
+margin: 12px 0px;
+}
+
+.card__img {
+  width:150px;
+  height:150px;
+  margin-left: 107px;
+  margin-top: 65px;
+}
+
+
+.cardsPresenting {
+  margin-bottom: 32px;
+}
+
+.custom-input {
+  width:171px;
+  height:40px;
+  background: #F6F6F6;
+  border-radius: 4px;
+}
+
+.photo-location {
+width: 336px;
+height: 261px;
+margin-left: 73px;
+margin-top:48px;
+background: #9C9C9C;
+/* opacity: 0.5; */
+border-radius: 50px;
+}
+
+.calendar {
+  margin-top: 50px;
+}
