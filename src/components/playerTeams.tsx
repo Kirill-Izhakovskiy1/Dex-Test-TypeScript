@@ -17,6 +17,7 @@ const PlayesTeams: React.FC = () => {
   const navigate = useNavigate();
   const [pageCount, setPageCount] = useState(0);
   const [cards, setCards] = useState([]);
+  const [selectCard, setSelectCard] = useState([]);
   // let id
   // let name = useSelector(state.players.name)
   let teamId;
@@ -71,7 +72,7 @@ const PlayesTeams: React.FC = () => {
   }, []);
   const sendTeamId = (e) => {
     console.log(e);
-
+    setSelectCard(e)
     api.player
       .getPlayers({
         name: "",
@@ -119,7 +120,7 @@ const PlayesTeams: React.FC = () => {
                   options={cards}
                   onInput={sendTeamId}
                   multiple={true}
-                  value
+                  value={selectCard}
                 />
                 {/* <Select options={cards} onInputChange={sendTeamId}/> */}
               </div>

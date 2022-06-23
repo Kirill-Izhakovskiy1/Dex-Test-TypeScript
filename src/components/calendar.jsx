@@ -12,7 +12,7 @@ function Calendar ({ onDateChange, valueCurrent}) {
 
   return (
     <DatePicker
-      selected={startDate}
+      selected={valueCurrent}
       onChange={(date) => {
         setStartDate(date)
         onDateChange(date)

@@ -24,53 +24,55 @@ const AddnewPlayer = () => {
   const [photo, setPhoto] = useState("");
   const domain: string = "http://dev.trainee.dex-it.ru";
   interface teamsString {
-        label: string;
-        value: string;
-      }
-      interface teamsNumber {
-        label: string;
-        value: number;
-      }
-      interface value {
-       target: {
-         value: string
-       }
-      }
-    
-    // [
-      // {
-    //   name: 'stenly',
-    //   foundationYear: 1998,
-    //   division: 'high',
-    //   conference: 'high',
-    //   imageUrl: 'high',
-    //   id: 2507
-    // },
-    // {
-      //   name: 'stenly1',
-      //   foundationYear: 1998,
-      //   division: 'high',
-      //   conference: 'high',
-      //   imageUrl: 'high',
-      //   id: 2507
-      // }
-    // ]
-  
+    label: string;
+    value: string;
+  }
+  interface teamsNumber {
+    label: string;
+    value: number;
+  }
+  interface value {
+    target: {
+      value: string;
+    };
+  }
+
+  // [
+  // {
+  //   name: 'stenly',
+  //   foundationYear: 1998,
+  //   division: 'high',
+  //   conference: 'high',
+  //   imageUrl: 'high',
+  //   id: 2507
+  // },
+  // {
+  //   name: 'stenly1',
+  //   foundationYear: 1998,
+  //   division: 'high',
+  //   conference: 'high',
+  //   imageUrl: 'high',
+  //   id: 2507
+  // }
+  // ]
+
   let name2: object = useSelector((state: any) => state.player);
- let teamValue: number = useSelector((state:any) => state.player.team)
+  let teamValue: number = useSelector((state: any) => state.player.team);
   useEffect(() => {
-    console.log(id);
-    api.player
-      .get({
-        id: +id,
-      })
-      .then((res) => {
-        console.log(res);
-        store.dispatch({
-          type: "player/set",
-          payload: res.data,
+    if (id) {
+      console.log(id);
+      api.player
+        .get({
+          id: id.slice(1),
+        })
+        .then((res) => {
+          console.log(res);
+          store.dispatch({
+            type: "player/set",
+            payload: res.data,
+          });
         });
-      });
+    }
   }, []);
   const sendData = () => {
     if (id) {
@@ -105,16 +107,7 @@ const AddnewPlayer = () => {
         avatarUrl: "string",
       });
       api.player
-        .add({
-          name: name,
-          number: number,
-          position: position,
-          team: team,
-          birthday: currentDate,
-          height: height,
-          weight: weight,
-          avatarUrl: photo,
-        })
+        .add(player)
         .then((r) => {
           console.log(r);
         })
@@ -181,10 +174,14 @@ const AddnewPlayer = () => {
       value: number;
     };
   }
-  console.log(currentDate);
+  // console.log(currentDate);
   function onDateChange(date) {
     currentDate = date;
     console.log(date);
+    store.dispatch({
+      type: "player/set",
+      payload: { birthday: date },
+    });
   }
   const sendName = (e: valueOfString) => {
     name = e.target.value;
@@ -204,9 +201,9 @@ const AddnewPlayer = () => {
       payload: { position: position },
     });
   };
-  const sendteam = (e:teamsNumber) => {
+  const sendteam = (e: teamsNumber) => {
     // team = e.target.value;
-    team = e.value
+    team = e.value;
     console.log(e);
     store.dispatch({
       type: "player/set",
@@ -264,7 +261,9 @@ const AddnewPlayer = () => {
     weight: number;
   }
   let player: playerType = store.getState().player as playerType;
-  return (<div className="cardsTeam">
+  console.log(player);
+  return (
+    <div className="cardsTeam">
       <Navifation />
       <div className="underNavPlayer">
         <SideBar />
@@ -281,10 +280,7 @@ const AddnewPlayer = () => {
                     className="Input_file"
                     onInput={sendPhoto}
                   />
-                  <img
-                    src={"img/add_a_photo_24px_rounded.png"}
-                    className="ImgofCamera"
-                  />
+                  <img src={player.avatarUrl} className="ImgofCamera" />
                 </div>
               </label>
             )}
@@ -303,14 +299,14 @@ const AddnewPlayer = () => {
                 label="Position"
                 options={positions}
                 onInput={sendPosition}
-                value={positions.find(item => item.value == player.position)}
+                value={positions.find((item) => item.value == player.position)}
               />
               {/* <input type="text" value="text" /> */}
               <Selector
                 label="Team"
                 options={teams}
                 onInput={sendteam}
-                value={teams.find(item => item.value == player.team)}
+                value={teams.find((item) => item.value == player.team)}
               />
               <div className="FourInputs">
                 <div className="ftwofirsrsmallinputs">
@@ -332,7 +328,7 @@ const AddnewPlayer = () => {
                   <div className="calendar">
                     <Calendar
                       onDateChange={onDateChange}
-                      valueCurrent={player.birthday}
+                      valueCurrent={new Date(player.birthday)}
                     />
                     {/* {console.log(birthday)} */}
                   </div>
@@ -360,7 +356,8 @@ const AddnewPlayer = () => {
           </div>
         </div>
       </div>
-    </div>)
-  };
+    </div>
+  );
+};
 
 export default AddnewPlayer;

@@ -24,7 +24,8 @@ function Selector ({label,  onInput, value, multiple, options}) {
 Selector.defaultProps = {
   label: '',
   options: [],
-  multiple: false
+  multiple: false,
+  // value:''
 }
 
 

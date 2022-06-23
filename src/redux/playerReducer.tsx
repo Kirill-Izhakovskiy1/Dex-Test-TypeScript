@@ -1,8 +1,8 @@
 
 
 const initialState:player = {
-    avatarUrl: "",
-    birthday: "",
+    avatarUrl: "/img/add_a_photo_24px_rounded.png",
+    birthday: new Date(),
     height: null,
     id: null,
     name: '',

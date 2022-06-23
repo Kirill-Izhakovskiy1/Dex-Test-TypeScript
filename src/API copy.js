@@ -97,17 +97,17 @@ const api = {
       return { data: result };
     },
     async upDateTeam(data) {
-      return axiosInstance.put("Team/Update", data);
-      // let response = await fetch(`${baseURL}/Team/Update}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     "Content-Type": "application/json;charset=utf-8",
-      //     authorization: `Bearer ${Cookies.get("token")}`,
-      //   },
-      //   body: JSON.stringify(data),
-      // });
-      // let result = await response.json();
-      // return { data: result };
+      // return axiosInstance.put("Team/Update", data);
+      let response = await fetch(`${baseURL}/Team/Update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        body: JSON.stringify(data),
+      });
+      let result = await response.json();
+      return { data: result };
     },
     async getTeams(data) {
       // return axiosInstance.get(
@@ -140,14 +140,18 @@ const api = {
     },
   },
   player: {
+    delete(id) {
+      return axiosInstance.delete(`Player/Delete?id=${id}`, id)
+    },
     async add(data) {
       //   return axiosInstance.post("Player/Add", data);
-      let response = await fetch(`${baseURL}/Team/Get?id=${data.id}`, {
-        method: "GET",
+      let response = await fetch(`${baseURL}/Player/Add`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           authorization: `Bearer ${Cookies.get("token")}`,
         },
+        body: JSON.stringify(data),
       });
       let result = await response.json();
       return { data: result };
@@ -188,23 +192,23 @@ const api = {
     },
 
     async upDate(data) {
-      return axiosInstance.put("Player/Update", data);
-      // let response = await fetch(`${baseURL}/Player/Update}`, {
-      //   method: "PUT",
-      //   headers: {
-      //     "Content-Type": "application/json;charset=utf-8",
-      //     authorization: `Bearer ${Cookies.get("token")}`,
-      //   },
-      //   body: JSON.stringify(data),
-      // });
-      // let result = await response.json();
-      // return { data: result };
+      // return axiosInstance.put("Player/Update", data);
+      let response = await fetch(`${baseURL}/Player/Update}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        body: JSON.stringify(data),
+      });
+      let result = await response.json();
+      return { data: result };
     },
 
     async get(data) {
       // console.log(data);
       // return axiosInstance.get(`Player/Get?id=${data.id}`);
-      let response = await fetch(`${baseURL}/Player/Get?id=${data.id}}`, {
+      let response = await fetch(`${baseURL}/Player/Get?id=${data.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json;charset=utf-8",

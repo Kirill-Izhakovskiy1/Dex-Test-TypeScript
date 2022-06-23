@@ -5,9 +5,12 @@ import Delete from "../UI/delete"
 import store from "../redux/store"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import api from "../API copy"
 const PlayerCard: React.FC = () => {
     let navigate = useNavigate()
-    let {id} = useParams()
+    let params = useParams()
+    let id = params.id
+    console.log(id)
     interface playerType {
         avatarUrl: string,
         birthday: string,
@@ -22,10 +25,16 @@ const PlayerCard: React.FC = () => {
     }
   let player: playerType = store.getState().player as playerType
 console.log(player)
-function getChange(id:string): any {
+function getChange(id)  {
     navigate(`/updateNewPlayer/${id}`)
     console.log(id)
     console.log(1)
+      }
+      function deletePlayer(id) {
+        console.log(id)
+        api.player.delete(id.slice(1)).then((r) =>{
+            console.log(r)
+        })
       }
    return <div className="cardBlock">
         <div className="navBarteam">
@@ -36,6 +45,7 @@ function getChange(id:string): any {
             </div>
             <div className="DeleteCreate">
             <button  className="create" onClick={() => getChange(id)}></button> 
+            <button className="btn" onClick={() => deletePlayer(id)}>delete</button>
                 <Delete/>
             </div>
         </div>
