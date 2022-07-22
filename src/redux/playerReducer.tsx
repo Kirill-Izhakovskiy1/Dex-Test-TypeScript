@@ -1,7 +1,7 @@
 
 
 const initialState:player = {
-    avatarUrl: "/img/add_a_photo_24px_rounded.png",
+    avatarUrl: "",
     birthday: new Date(),
     height: null,
     id: null,
@@ -14,15 +14,15 @@ const initialState:player = {
 }
 interface player {
     avatarUrl: string,
-    birthday: string,
-    height: number,
-    id: number,
+    birthday: any,
+    height: number | null,
+    id: number | null,
     name: string,
-    number: number,
+    number: number | null,
     position: string,
-    team: number,
+    team: number | null,
     teamName:string,
-    weight: number
+    weight: number | null
 }
 
 interface Action {

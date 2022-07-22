@@ -30,49 +30,14 @@ function SignUp() {
     const name1:string = r.data.name
    
     localStorage.auth = JSON.stringify(r.data)
-      // localStorage.auth = JSON.stringify(r.data)
       console.log(localStorage.auth)
     store.dispatch({
       type:'auth/loaded',
       payload:
       {name: name1,
       token: token}
-    })}).then(() => navigate("/AddNewTeam"))
-   
-    
-  //     console.log(Cookies.get('token'), 'cookies')
-      // localStorage.auth = JSON.stringify(r.data)
-      // localStorage.auth = JSON.stringify(r.data)
-      // console.log(localStorage.auth)
-      // store.dispatch({
-      //   type: 'auth/loaded',
-      //   payload: {isLoaded: true,
-      //            payload: token
-      //            }
-      // })
-
-     
-
-    }
-    
-  // const sendData = () => {
-  //   api.registration({
-  //     "userName": userName,
-  //     "login": login,
-  //     "password": password
-  //   }).then((responce) => {
-  //     console.log(responce)
-  //     // setContext({
-  //     //   isLoaded: true
-  //     // })
-  //   }).catch((error) => {
-  //     console.log(error)
-  //   })
-  // }
-
-  // const REF = useRef(null)
-  
-  
+    })}).then(() => navigate("/AddNewTeam"))}
+ 
   
   
     return (
@@ -105,4 +70,3 @@ function SignUp() {
   }
   
   export default SignUp;
-  

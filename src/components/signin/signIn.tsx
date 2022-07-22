@@ -28,7 +28,7 @@ const SignIn: React.FC = () => {
   } = useForm({ resolver: yupResolver(schema) });
   let res;
   let name = useSelector((state: any) => state.auth.name);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const onSubmit = (data) => {
     api
       .login(data)

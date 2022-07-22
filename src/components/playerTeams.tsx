@@ -1,110 +1,145 @@
-import Navifation from "./navigation";
-import Search from "../UI/search";
-import Add from "../UI/add+";
-import ReactPaginate from "react-paginate";
-import Selector from "../UI/selector";
-import { NavLink, Link } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
-import SideBar from "./sideBar";
-import api from "../API copy";
-import store from "../redux/store";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { array } from "yup";
-import Select from "react-select";
-import { useSelector } from "react-redux";
+import Navifation from './navigation'
+import Search from '../UI/search'
+import Add from '../UI/add+'
+import ReactPaginate from 'react-paginate'
+import Selector from '../UI/selector'
+import { NavLink, Link } from 'react-router-dom'
+import { useState } from 'react/cjs/react.development'
+import SideBar from './sideBar'
+import api from '../API copy'
+import store from '../redux/store'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { array } from 'yup'
+import Select from 'react-select'
+import { useSelector } from 'react-redux'
+import React from 'react'
 const PlayesTeams: React.FC = () => {
-  const navigate = useNavigate();
-  const [pageCount, setPageCount] = useState(0);
-  const [cards, setCards] = useState([]);
-  const [selectCard, setSelectCard] = useState([]);
-  // let id
-  // let name = useSelector(state.players.name)
-  let teamId;
-  let allPlayers: Array<Player> = store.getState().players as Array<Player>;
-  const domain = "http://dev.trainee.dex-it.ru";
-  const [players, setplayers] = useState([]);
+  const navigate = useNavigate()
+  const [pageCount, setPageCount] = useState<number>(0)
+  const [cards, setCards] = useState<Array<Team>>([])
+  const [selectCard, setSelectCard] = useState<Array<number>>([])
+  const [currentPage, setCurrentPage] = useState([])
+  const [currentSize, setCurrentSize] = useState({label:6, value:6})
+  const [initialPage, setInitialPAge] = useState(0)
+  const [value, setValue] = useState<string>('')
+  let teamId
+  console.log(selectCard)
+  let playersonEachPage = useSelector((state: any) => state.players)
+  let allPlayers: Array<Player> = store.getState().players as Array<Player>
+  const domain = 'http://dev.trainee.dex-it.ru'
+  const [players, setplayers] = useState([])
   interface Player {
-    id: number;
-    imageUrl:string,
+    id: number
+    avatarUrl: string
     name: string
+    team
+  }
+  interface Team {
+    value: number
+    label: string
   }
   const handlePageClick = (page) => {
     api.player
       .getPlayers({
-        name: "",
-        teamIds: teamId,
+        name: '',
+        teamIds: selectCard.map((e) => e.value),
         page: page.selected + 1,
-        pageSize: 6,
+        pageSize: currentSize.value ,
       })
       .then((response) => {
-        console.log(response);
+        console.log(response)
         store.dispatch({
-          type: "players/set",
-          payload: {
-            payload: response.data.data,
-          },
-        });
-        console.log(store.getState().players);
+          type: 'players/set',
 
-        console.log(response);
-        setPageCount(response.data.count / response.data.size);
-      });
-  };
+          payload: response.data.data,
+        })
+        console.log(store.getState().players)
+        // setCurrentPage(response.data.data)
+        setInitialPAge(page.selected)
+        console.log(response)
+        setPageCount(response.data.count / response.data.size)
+      })
+  }
 
   useEffect(() => {
     api.team
       .getTeams({
-        name: "",
+        name: '',
         page: 1,
         pageSize: 10000,
       })
       .then((response) => {
         setCards(
           response.data.data.map((team) => {
-            return { value: team.id, label: team.name };
-          })
-        );
+            return { value: team.id, label: team.name }
+          }),
+        )
 
-        console.log(response);
-        setPageCount(response.data.count / response.data.size);
-      });
-  }, []);
+        console.log(response)
+      })
+  }, [])
   const sendTeamId = (e) => {
-    console.log(e);
+    console.log(e)
     setSelectCard(e)
     api.player
       .getPlayers({
-        name: "",
+        name: '',
         page: 1,
         teamIds: e.map((e) => e.value),
-        pageSize: 6,
+        pageSize: currentSize.value,
       })
       .then((response) => {
         store.dispatch({
-          type: "players/set",
+          type: 'players/set',
           payload: response.data.data,
-        });
+        })
 
-        console.log(response);
-        setPageCount(response.data.count / response.data.size);
-      });
-  };
+        console.log(response)
+        // setCurrentPage(response.data.data)
+        setPageCount(response.data.count / response.data.size)
+      })
+  }
   function getPlayer(id) {
     store.dispatch({
-      type: "player/set",
+      type: 'player/set',
       payload: allPlayers.filter((player: Player) => player.id === id)[0],
-    });
-    navigate(`/playerCard/:${id}`);
+    })
+    navigate(`/playerCard/:${id}`)
   }
-  const [value, setValue] = useState("");
+ 
 
   function filteredCountries() {
     cards.filter((card) => {
-      return card.name.toLowerCase().includes(value.toLowerCase());
-    });
+      return card.name.toLowerCase().includes(value.toLowerCase())
+    })
   }
+  const filteredPlayer: Array<any> = allPlayers.filter((player) => {
+    return (player.name.toString().toLowerCase().includes(value.toLowerCase()) ) 
+    // )
+  })
+  function choosedSize(value) {
+    setCurrentSize(value)
+    api.player
+      .getPlayers({
+        name: '',
+        page: 1,
+        teamIds: selectCard.map(e => e.value),
+        pageSize: value.value,
+      })
+      .then((response) => {
+        store.dispatch({
+          type: 'players/set',
+          payload: response.data.data,
+        })
 
+        console.log(response)
+        setInitialPAge(0)
+        // setCurrentPage(response.data.data)
+        setPageCount(response.data.count / response.data.size)
+      })
+     
+  }
   return (
     <div className="cardsTeam">
       <Navifation />
@@ -122,7 +157,6 @@ const PlayesTeams: React.FC = () => {
                   multiple={true}
                   value={selectCard}
                 />
-                {/* <Select options={cards} onInputChange={sendTeamId}/> */}
               </div>
             </div>
             <Link to="/addnewPlayer" className="AddTeam1">
@@ -141,12 +175,12 @@ const PlayesTeams: React.FC = () => {
               </div>
             )}
             <div className="show-cards">
-              {allPlayers.map((player) => (
+              {filteredPlayer.map((player) => (
                 <div className="card" onClick={() => getPlayer(player.id)}>
                   <div>
                     {
                       <img
-                        src={`${domain}${player.imageUrl}`}
+                        src={`${domain}${player.avatarUrl}`}
                         className="card__img"
                       />
                     }
@@ -159,6 +193,15 @@ const PlayesTeams: React.FC = () => {
               ))}
             </div>
           </div>
+          <Selector
+            options={[
+              { value: 1, label: 1},
+              { value: 2, label: 2 },
+              { value: 3, label: 3 },
+            ]}
+            onInput={choosedSize}
+            value={currentSize}
+          />
           <div className="layout-pages">
             <ReactPaginate
               className="pages"
@@ -168,15 +211,16 @@ const PlayesTeams: React.FC = () => {
               // pageRangeDisplayed={5}
               pageCount={pageCount}
               previousLabel="<"
-              renderOnZeroPageCount={null}
-              pageRangeDisplayed={4}
+              // renderOnZeroPageCount={null}
+              pageRangeDisplayed={5}
               marginPagesDisplayed={1}
+              forcePage={initialPage}
             />
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PlayesTeams;
+export default PlayesTeams

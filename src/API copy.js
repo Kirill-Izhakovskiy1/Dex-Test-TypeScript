@@ -83,6 +83,9 @@ const api = {
     return await response.json();
   },
   team: {
+    delete(id) {
+      return axiosInstance.delete(`Team/Delete?id=${id}`, id)
+    },
     async add(data) {
       // return axiosInstance.post("Team/Add", data);
       let response = await fetch(`${baseURL}/Team/Add`, {
@@ -170,11 +173,6 @@ const api = {
     },
 
     async getPlayers(data) {
-      // return axiosInstance.get(
-      //   `Player/GetPlayers?TeamIds=${data.teamIds.map((id) => id).join("&&TeamIds=")}&Page=${
-      //     data.page
-      //   }&PageSize=${data.pageSize}`
-      // );
       let response = await fetch(
         `${baseURL}/Player/GetPlayers?TeamIds=${data.teamIds
           .map((id) => id)
@@ -193,7 +191,7 @@ const api = {
 
     async upDate(data) {
       // return axiosInstance.put("Player/Update", data);
-      let response = await fetch(`${baseURL}/Player/Update}`, {
+      let response = await fetch(`${baseURL}/Player/Update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",

@@ -1,131 +1,142 @@
-import Navifation from "./navigation";
-import Search from "../UI/search";
-import Add from "../UI/add+";
-import ReactPaginate from "react-paginate";
-import { NavLink } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
-import Input1 from "../UI/Input1";
-import Input from "../UI/input_type";
-import Selector from "../UI/selector";
-import SmallInput from "../UI/smallInput";
-import SideBar from "./sideBar";
-import api from "../API copy";
-import { useParams } from "react-router-dom";
-import store from "../redux/store";
-import { useSelector } from "react-redux";
-
+import Navifation from './navigation'
+import Search from '../UI/search'
+import Add from '../UI/add+'
+import ReactPaginate from 'react-paginate'
+import { NavLink } from 'react-router-dom'
+import { useState } from 'react/cjs/react.development'
+import Input1 from '../UI/Input1'
+import Input from '../UI/input_type'
+import Selector from '../UI/selector'
+import SmallInput from '../UI/smallInput'
+import SideBar from './sideBar.jsx'
+import api from '../API copy'
+import { useParams } from 'react-router-dom'
+import store from '../redux/store'
+import { useSelector } from 'react-redux'
+import React from 'react'
+import { useEffect } from 'react'
 const AddnewTeam: React.FC = () => {
-  const { coloritem, setColoritem } = useState(false);
-  const [photo, setPhoto] = useState("");
-  let teamData: object = useSelector((state:any) => state.team)
+  const { coloritem, setColoritem } = useState(false)
+  const [photo, setPhoto] = useState('')
+  let teamData: object = useSelector((state: any) => state.team)
+  let teams = store.getState().team
   interface team {
-    name: string,
-    foundationYear: number,
-    division: string,
-    conference: string,
-    imageUrl: string,
+    name: string
+    foundationYear: number
+    division: string
+    conference: string
+    imageUrl: string
     id: number
-}
-  let teamParams:team = store.getState().team as team
-  const params = useParams();
-  const id = params.id;
-  console.log(id);
+  }
+  useEffect(() => {
+    if (id) {
+      console.log(id)
+      api.team
+        .getTeam({
+          id: id,
+        })
+        .then((res) => {
+          console.log(res)
+          store.dispatch({
+            type: 'team/set',
+            payload: res.data,
+          })
+        })
+    }
+  }, [])
+  let teamParams: team = store.getState().team as team
+  const params = useParams()
+  const id = params.id
+  console.log(id)
+
   const sendData = () => {
     if (id) {
       api.team
-        .upDateTeam(
-       store.getState().team
-        )
+        .upDateTeam(store.getState().team)
         .then((r) => {
-          console.log(r);
+          console.log(r)
         })
         .catch((e) => {
-          console.log(e);
-        });
+          console.log(e)
+        })
     } else {
       api.team
-        .add({
-          name: name,
-          foundationYear: year,
-          division: division,
-          conference: conference,
-          imageUrl: photo,
-        })
+        .add(teams)
         .then((r) => {
-          console.log(r);
+          console.log(r)
         })
         .catch((e) => {
-          console.log(e);
-        });
+          console.log(e)
+        })
     }
-  };
+  }
   interface value {
     target: {
-      value: string;
-    };
+      value: string
+    }
   }
   interface valueNumber {
     target: {
-      value: number;
-    };
+      value: number
+    }
   }
-  // interface valuePhoto {
-  //   target: {
-  //     value: any;
-  //   };
-  // }
+
   const sendName = (e: value) => {
-    console.log(e);
-    name = e.target.value;
-    console.log(name);
+    console.log(e)
+    name = e.target.value
+    console.log(name)
     store.dispatch({
-      type: "team/set",
+      type: 'team/set',
       payload: { name: name },
-    });
-  };
+    })
+  }
   const sendDivision = (e: value) => {
-    division = e.target.value;
-    console.log(division);
+    division = e.target.value
+    console.log(division)
     store.dispatch({
-      type: "team/set",
+      type: 'team/set',
       payload: { division: division },
-    });
-  };
+    })
+  }
   const sendConference = (e: value) => {
-    conference = e.target.value;
-    console.log(conference);
+    conference = e.target.value
+    console.log(conference)
     store.dispatch({
-      type: "team/set",
+      type: 'team/set',
       payload: { conference: conference },
-    });
-  };
+    })
+  }
   const SendYear = (e: valueNumber) => {
-    year = e.target.value;
-    console.log(year);
+    year = e.target.value
+    console.log(year)
     store.dispatch({
-      type: "team/set",
-      payload: { year: year },
-    });
-  };
+      type: 'team/set',
+      payload: { foundationYear: year },
+    })
+  }
 
   const sendPhoto = (e) => {
-    let formData = new FormData();
-    formData.append("file", e.target.files[0]);
+    let formData = new FormData()
+    formData.append('file', e.target.files[0])
     api.saveImage(formData).then((response) => {
-      setPhoto(response.data);
-      console.log(response);
-    });
-  };
+      setPhoto(response.data)
+      console.log(response)
+      store.dispatch({
+        type: 'team/set',
+        payload: { imageUrl: response.data },
+      })
+    })
+  }
 
-  let name: string;
-  let division: string;
-  let conference: string;
-  let year: number;
+  let name: string
+  let division: string
+  let conference: string
+  let year: number
 
   // let photo
-  const domain = "http://dev.trainee.dex-it.ru";
+  const domain = 'http://dev.trainee.dex-it.ru'
   function changeColorofSign() {
-    setColoritem(!coloritem);
+    setColoritem(!coloritem)
   }
 
   return (
@@ -138,7 +149,7 @@ const AddnewTeam: React.FC = () => {
             <p className="textinAddplayer">Players/Add Players</p>
           </div>
           <div className="ADDPlayerONE">
-            {!photo && (
+            {!teamParams.imageUrl && (
               <label>
                 <div className="inputPhoto">
                   <input
@@ -147,25 +158,52 @@ const AddnewTeam: React.FC = () => {
                     onInput={sendPhoto}
                   />
                   <img
-                    src={"img/add_a_photo_24px_rounded.png"}
+                    src="/img/add_a_photo_24px_rounded.png"
                     className="ImgofCamera"
                   />
                 </div>
               </label>
             )}
-            {photo && (
-              <img src={`${domain}${photo}`} className="photo-location" />
+            {teamParams.imageUrl && (
+              <label>
+                <input
+                  type="file"
+                  className="changePhoto"
+                  onInput={sendPhoto}
+                />
+                <img
+                  src={`${domain}${teamParams.imageUrl}`}
+                  className="photo-location"
+                />
+              </label>
             )}
             <div className="InputNameAddPlayer">
-              <Input1 label="Name" type="text" onInput1={sendName} value={teamParams.name}/>
+              <Input1
+                label="Name"
+                type="text"
+                onInput1={sendName}
+                value={teamParams.name}
+              />
               <div className="DivisionInput">
-                <Input1 label="Division" onInput1={sendDivision} value={teamParams.division}/>
+                <Input1
+                  label="Division"
+                  onInput1={sendDivision}
+                  value={teamParams.division}
+                />
               </div>
               <div className="ConferenceInput">
-                <Input1 label="Conference" onInput1={sendConference} value={teamParams.conference}/>
+                <Input1
+                  label="Conference"
+                  onInput1={sendConference}
+                  value={teamParams.conference}
+                />
               </div>
               <div className="Year of foundation1">
-                <Input1 label="Year of foundation" onInput1={SendYear} value={teamParams.foundationYear}/>
+                <Input1
+                  label="Year of foundation"
+                  onInput1={SendYear}
+                  value={teamParams.foundationYear}
+                />
               </div>
               {photo}
               <div className="buttons">
@@ -183,7 +221,7 @@ const AddnewTeam: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddnewTeam;
+export default AddnewTeam

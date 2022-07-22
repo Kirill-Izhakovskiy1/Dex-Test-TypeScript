@@ -4,15 +4,13 @@ const initialState:team = {
     division: '',
     conference: '',
     imageUrl: '',
-    id: null
 }
 interface team {
     name: string,
-    foundationYear: number,
+    foundationYear: number | null,
     division: string,
     conference: string,
     imageUrl: string,
-    id: number
 }
 
 interface Action {

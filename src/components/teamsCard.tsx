@@ -4,7 +4,7 @@ import Create from "../UI/create"
 import Delete from "../UI/delete"
 
 
-function TeamsCard () {
+const TeamsCard: React.FC = () => {
     const team = {
         "name": "string1",
         "foundationYear": 0,

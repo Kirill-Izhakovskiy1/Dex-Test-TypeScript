@@ -3,7 +3,7 @@ import Burger from "../UI/busrger.tsx"
 import MenuByBurger from "../UI/menuByBurger"
 import store from "../redux/store"
 import { useSelector } from "react-redux"
-function Navifation () {
+const Navifation: React.FC = () => {
     let namePlayer = useSelector(state => state.auth.name)
     const [menuActive, setMenuActive] = useState(false)
     return <div className="NAVBAR">

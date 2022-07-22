@@ -1,6 +1,10 @@
 import { useState } from "react"
 
 function Input(props) {
+    interface eyeOnType {
+        eyeOn: Boolean,
+        setEyeOn: Boolean
+    }
     const [eyeOn, setEyeOn] = useState(false);
     function onEyeClick() {
         setEyeOn(!eyeOn);
